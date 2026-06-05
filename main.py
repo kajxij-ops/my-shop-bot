@@ -37,14 +37,17 @@ def main_markup(user_id):
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-    markup, points = main_markup(message.from_user.id)
+    user_id = message.from_user.id
+    markup, points = main_markup(user_id)
+    # 🌟 تم إضافة الآيدي هنا ليظهر للزبون مباشرة في القائمة الرئيسية مع ميزة النسخ التلقائي عند الضغط عليه
     welcome_text = (
-        f"👋 أهلاً بك في متجرنا الرسمي!\n"
+        f"👋 أهلاً بك في متجرنا الرسمي!\n\n"
+        f"🆔 الـ ID الخاص بك: `{user_id}`\n"
         f"💰 رصيدك الحالي: {points} نقطة.\n"
         f"━━━━━━━━━━━━━━\n"
         f"إختر من الأزرار أسفله للتصفح أو الشراء مباشرة 👇"
     )
-    bot.send_message(message.chat.id, welcome_text, reply_markup=markup)
+    bot.send_message(message.chat.id, welcome_text, reply_markup=markup, parse_mode="Markdown")
 
 @bot.message_handler(commands=['add'])
 def add_points(message):
@@ -126,7 +129,7 @@ def callback_listener(call):
             "📩 **ORDER / للطلب والاستفسار:**\nContact: @QEA77_DZ\n\n"
             "💳 **PAYMENT METHODS / طرق الدفع:**\n• Binance  • PayPal  • Gift Cards  • Morocco Payment Methods 🇲🇦\n\n"
             "💵 **RECHARGE POINTS / لتعبئة الرصيد:**\nقاعدة الشحن: 1 نقطة = 1 دولار\n"
-            "🆔 الآيدي الخاص بك (اعطه للآدمن ليشحن لك): `" + str(user_id) + "`\n\n"
+            "🆔 الآيدي الخاص بك: `" + str(user_id) + "`\n\n"
             "لتعبئة رصيدك وتجميع النقاط يرجى التواصل عبر الرابط:\n🔗 https://t.me/MOUAD0219"
         )
         markup = InlineKeyboardMarkup()
@@ -136,12 +139,13 @@ def callback_listener(call):
     elif call.data == "back_main":
         markup, points = main_markup(user_id)
         welcome_text = (
-            f"👋 أهلاً بك في متجرنا الرسمي!\n"
+            f"👋 أهلاً بك في متجرنا الرسمي!\n\n"
+            f"🆔 الـ ID الخاص بك: `{user_id}`\n"
             f"💰 رصيدك الحالي: {points} نقطة.\n"
             f"━━━━━━━━━━━━━━\n"
             f"إختر من الأزرار أسفله للتصفح أو الشراء مباشرة 👇"
         )
-        bot.edit_message_text(welcome_text, call.message.chat.id, call.message.message_id, reply_markup=markup)
+        bot.edit_message_text(welcome_text, call.message.chat.id, call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
 def run_web_server():
     PORT = int(os.environ.get("PORT", 8080))
