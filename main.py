@@ -143,7 +143,6 @@ def callback_listener(call):
         )
         bot.edit_message_text(welcome_text, call.message.chat.id, call.message.message_id, reply_markup=markup)
 
-# تشغيل خادم ويب وهمي لإبقاء الخدمة المجانية حية على Render
 def run_web_server():
     PORT = int(os.environ.get("PORT", 8080))
     Handler = http.server.SimpleHTTPRequestHandler
@@ -152,9 +151,8 @@ def run_web_server():
         httpd.serve_forever()
 
 if __name__ == "__main__":
-    # تشغيل الويب في خلفية منفصلة لكي لا يعطل البوت
     web_thread = threading.Thread(target=run_web_server, daemon=True)
     web_thread.start()
     
-    print("⚡ البوت المتطور يعمل الآن مجاناً...")
+    print("⚡ البوت المتطور يعمل الآن...")
     bot.infinity_polling()
